@@ -1,20 +1,14 @@
-//One Call Does Not Work
-//https://api.openweathermap.org/data/3.0/onecall?lat=33.44&lon=-94.04&exclude=hourly&appid=316a4a8f9d4163ffc80129de442a5dcd&units=imperial
-//https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=hourly,minutely,alerts&appid=${APIKEY}units=imperial
-
-//GeoForLatLong
-//https://api.openweathermap.org/geo/1.0/direct?q={CityName}&limit=1&appid=316a4a8f9d4163ffc80129de442a5dcd
-
-
 var APIKey = "316a4a8f9d4163ffc80129de442a5dcd";
 var city;
 var button = document.querySelector('#submitButton');
-var heading = document.querySelector('h1');
 var cityInput = document.querySelector('#cityName');
+var cardContainer = document.querySelector('#cardContainer');
+var currentContainer = document.querySelector('#currentWeatherContainer')
 
 
-
-function buttonHandler(){
+function buttonHandler(event){
+    event.preventDefault();
+    cardContainer.innerHTML = '';
 
     city = cityInput.value.trim();
 
@@ -22,9 +16,6 @@ function buttonHandler(){
         alert('Text field is Blank');
         return
     }
-
-    console.log(city);
-    heading.textContent = 'Button Working'
 
     getLatLong(city);
     
@@ -55,22 +46,41 @@ function makeOneCall(lat,lon){
             return response.json();
         })
         .then(function (data){
-            console.log(data)
+            console.log(data);
             displayCurrentData(data.current);
-            displayForecast(data.daily);
+            displayFiveForecast(data.daily);
         })
 
 }
 
-function displayForecast(data){
+function displayFiveForecast(data){
+    cardContainer.before(forecastHead)
+    for(i=1; i<6; i++){
 
-
+        var card = document.createElement('div');
+        card.setAttribute('class', 'card w-20');
+        card.innerHTML = `<div class="card-body">
+                            <h5 class="card-header">${convertDate(data[i].dt)}</h5>
+                            <img src=http://openweathermap.org/img/wn/${data[i].weather[0].icon}@2x.png />
+                            <ul class="card-text">
+                                <li>Max Temperature: ${data[i].temp.max}</li>
+                                <li>Wind Speed: ${data[i].wind_speed}</li>
+                                <li>Humidity: ${data[i].humidity}</li>
+                            </ul>`
+        cardContainer.appendChild(card);
+    }
 }
 
 function displayCurrentData(data){
-    var dateString = moment.unix(data.dt).format("MM/DD/YYYY");
-    console.log(dateString)
+    currentContainer.textContent = '';
+    var cityCurrentInfo = document.createElement('div');
+    cityCurrentInfo.innerHTML = `<h2>${city}</h2>`
+    currentContainer.append(cityCurrentInfo);
 
+}
+
+function convertDate(unixDate){
+    return moment.unix(unixDate).format("MM/DD/YYYY");
 }
 
 button.addEventListener('click', buttonHandler)

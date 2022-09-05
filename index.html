@@ -9,15 +9,26 @@
     <link rel="stylesheet" href="./assets/styles/style.css">
 </head>
 <body>
-    <h1>Weather Dashboard</h1>
+    <main class="container"></main>
+        <div class="row">
+            <div class="col-3 p-3 ms-2 d-flex flex-column">
+                <h1>Weather Dashboard</h1>
 
-    <label for="cityName">Please Enter A City Name</label>
-    <input type="text" name="cityName" id="cityName">
-    <button type="submit" class="" id="submitButton">Show Me The Weather</button>
-
-    <div>
-        <h1 id="currentDate"></h1>
-    </div>
+                <label for="cityName">Please Enter A City Name</label>
+                <form>
+                    <input type="text" name="cityName" id="cityName">
+                    <button type="button" class="btn btn-primary" id="submitButton">Show Me The Weather</button>
+                </form>
+            </div>
+            <div class="col-8 d-flex flex-column">
+                <div class="d-flex" id="currentWeatherContainer">
+                </div>
+                <h2>5-Day Forecast</h2>
+                <div class="d-flex justify-content-around flex-wrap m-3" id="cardContainer">
+                </div>
+            </div>
+        </div>
+</main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
     <script src="./assets/scripts/script.js"></script>
