@@ -29,7 +29,12 @@
     padding: 5px;
     border-radius: 5px;
     text-align: center;
-    margin:5px
+    margin:5px;
+    text-transform: capitalize;
+}
+
+h2{
+    text-transform: capitalize;
 }
 
 label{
