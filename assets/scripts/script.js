@@ -64,7 +64,7 @@ function displayFiveForecast(data){
     for(i=1; i<6; i++){
         var card = document.createElement('div');
         card.setAttribute('class', 'text-bg-dark card rounded shadow my-2');
-        card.setAttribute('style', 'width: 175px;')
+        //card.setAttribute('style', 'width: 190px;')
         card.innerHTML = `<div class="card-body ">
                             <h5 class="card-header">${convertDate(data[i].dt)}</h5>
                             <img src=http://openweathermap.org/img/wn/${data[i].weather[0].icon}@2x.png />
