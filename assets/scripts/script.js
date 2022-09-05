@@ -9,17 +9,22 @@ var h2Header = document.querySelector('#fiveDay')
 
 function buttonHandler(event){
     event.preventDefault();
-    cardContainer.innerHTML = '';
-
     city = cityInput.value.trim();
 
     if(city == ''){
         alert('Text field is Blank');
         return
     }
-
     getLatLong(city);
+    clearAll()
     
+}
+
+function clearAll(){
+    cardContainer.innerHTML = '';
+    h2Header.textContent = '';
+    cityInput.value = '';
+    currentContainer.textContent = '';
 }
 
 function getLatLong(city){
@@ -55,16 +60,15 @@ function makeOneCall(lat,lon){
 }
 
 function displayFiveForecast(data){
-    h2Header.textContent = '';
     h2Header.textContent = '5-Day Forecast';
     for(i=1; i<6; i++){
         var card = document.createElement('div');
-        card.setAttribute('class', 'card');
-        card.setAttribute('style', 'width: 200px;')
-        card.innerHTML = `<div class="card-body">
+        card.setAttribute('class', 'text-bg-dark card rounded shadow my-2');
+        card.setAttribute('style', 'width: 175px;')
+        card.innerHTML = `<div class="card-body ">
                             <h5 class="card-header">${convertDate(data[i].dt)}</h5>
                             <img src=http://openweathermap.org/img/wn/${data[i].weather[0].icon}@2x.png />
-                            <ul class="card-text">
+                            <ul class="card-text list-unstyled">
                                 <li>Max Temperature: ${data[i].temp.max} F</li>
                                 <li>Wind Speed: ${data[i].wind_speed} MPH</li>
                                 <li>Humidity: ${data[i].humidity}%</li>
@@ -74,13 +78,15 @@ function displayFiveForecast(data){
 }
 
 function displayCurrentData(data){
-    currentContainer.textContent = '';
     var cityCurrentInfo = document.createElement('div');
     var uvColor = getUVColor(data.uvi);
-    cityCurrentInfo.innerHTML = `<h2>${city.toUpperCase()}</h2>
-                                 <h3>Current Conditions</h3>
-                                    <img src=http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png />
-                                    <ul>
+    cityCurrentInfo.setAttribute('class', 'w-100')
+    cityCurrentInfo.innerHTML = `<div class='d-flex align-items-center'>
+                                <h2>${city.toUpperCase()}</h2>
+                                 <img src=http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png />
+                                 </div>
+                                 <h3 class='text-secondary'>Current Conditions</h3>
+                                    <ul class="list-unstyled">
                                         <li>Current Temperature: ${data.temp}</li>
                                         <li>Wind Speed: ${data.wind_speed} MPH</li>
                                         <li>Humidity: ${data.humidity}%</li>
