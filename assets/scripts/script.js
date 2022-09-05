@@ -18,15 +18,12 @@ function buttonHandler(event){
         return
     }
     getLatLong(city);
-    clearAll();
     
 }
 
 function linkHandler(event){
-    event.preventDefault;
     city = event.target.textContent;
     getLatLong(city);
-    clearAll();
 }
 
 function clearAll(){
@@ -37,8 +34,10 @@ function clearAll(){
 }
 
 function getLatLong(city){
-    
+
+    clearAll();
     var APIGeoCall = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${APIKey}`
+
     if(!priorSearches.includes(city)){
         priorSearches.push(city);
         window.localStorage.setItem('storedSearches', JSON.stringify(priorSearches));
@@ -79,7 +78,6 @@ function displayFiveForecast(data){
     for(i=1; i<6; i++){
         var card = document.createElement('div');
         card.setAttribute('class', 'text-bg-dark card rounded shadow my-2');
-        //card.setAttribute('style', 'width: 190px;')
         card.innerHTML = `<div class="card-body ">
                             <h5 class="card-header">${convertDate(data[i].dt)}</h5>
                             <img src=http://openweathermap.org/img/wn/${data[i].weather[0].icon}@2x.png />
@@ -100,22 +98,22 @@ function displayCurrentData(data){
                                 <h2>${city}</h2>
                                  <img src=http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png />
                                  </div>
-                                 <h3 class='text-secondary'>Current Conditions</h3>
-                                    <ul class="list-unstyled">
-                                        <li>Current Temperature: ${data.temp}</li>
-                                        <li>Wind Speed: ${data.wind_speed} MPH</li>
-                                        <li>Humidity: ${data.humidity}%</li>
-                                        <li>UV Index: <span class="uvIcon" id='${uvColor}'>${data.uvi}</span></li>
+                                 <h3 class='text-white'>Current Conditions</h3>
+                                    <ul class="list-unstyled list-group">
+                                        <li class="list-group-item">Current Temperature: ${data.temp}</li>
+                                        <li class="list-group-item">Wind Speed: ${data.wind_speed} MPH</li>
+                                        <li class="list-group-item">Humidity: ${data.humidity}%</li>
+                                        <li class="list-group-item">UV Index: <span class="uvIcon" id='${uvColor}'>${data.uvi}</span></li>
                                     </ul>`
     currentContainer.append(cityCurrentInfo);
 
 }
 
 function getUVColor(uvIndex){
-    if(uvIndex < 3){
+    if(uvIndex < 2){
         return 'low';
     }
-    if(uvIndex<7){
+    if(uvIndex < 6){
         return 'medium';
     }
     else{
@@ -144,7 +142,7 @@ function printPriorSearches(){
     }
 }
 
-
-button.addEventListener('click', buttonHandler)
+//loads everything and adds respective handlers
 loadPriorSearches();
+button.addEventListener('click', buttonHandler)
 priorSearchList.addEventListener('click', linkHandler)

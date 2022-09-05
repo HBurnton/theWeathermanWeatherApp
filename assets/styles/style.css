@@ -11,6 +11,32 @@
 }
 
 .uvIcon{
+    padding: 1px 5px;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+#priorSearchList{
+    width: 100%;
+}
+
+#priorSearchList>li:hover{
+    cursor: pointer;
+}
+
+#priorSearchList>li{
+    background-color: cadetblue;
     padding: 5px;
     border-radius: 5px;
+    text-align: center;
+    margin:5px
+}
+
+label{
+    margin: 5px;
+}
+
+.d-flex>h2{
+    position: relative;
+    top:10px;
 }
