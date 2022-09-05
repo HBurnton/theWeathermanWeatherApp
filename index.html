@@ -11,7 +11,7 @@
 <body>
     <main class="container"></main>
         <div class="row">
-            <div class="col-3 p-3 ms-2 d-flex flex-column">
+            <div class="col-3 py-3 ms-2 d-flex flex-column">
                 <h1>Weather Dashboard</h1>
 
                 <label for="cityName">Please Enter A City Name</label>
@@ -20,11 +20,11 @@
                     <button type="button" class="btn btn-primary" id="submitButton">Show Me The Weather</button>
                 </form>
             </div>
-            <div class="col-8 d-flex flex-column">
+            <div class="col-8 d-flex flex-column m-3">
                 <div class="d-flex" id="currentWeatherContainer">
                 </div>
-                <h2>5-Day Forecast</h2>
-                <div class="d-flex justify-content-around flex-wrap m-3" id="cardContainer">
+                <h2 id="fiveDay"></h2>
+                <div class="d-flex justify-content-around flex-wrap my-3" id="cardContainer">
                 </div>
             </div>
         </div>

@@ -4,6 +4,7 @@ var button = document.querySelector('#submitButton');
 var cityInput = document.querySelector('#cityName');
 var cardContainer = document.querySelector('#cardContainer');
 var currentContainer = document.querySelector('#currentWeatherContainer')
+var h2Header = document.querySelector('#fiveDay')
 
 
 function buttonHandler(event){
@@ -46,26 +47,27 @@ function makeOneCall(lat,lon){
             return response.json();
         })
         .then(function (data){
-            console.log(data);
+            console.log(data.current);
             displayCurrentData(data.current);
             displayFiveForecast(data.daily);
-        })
 
+        })
 }
 
 function displayFiveForecast(data){
-    cardContainer.before(forecastHead)
+    h2Header.textContent = '';
+    h2Header.textContent = '5-Day Forecast';
     for(i=1; i<6; i++){
-
         var card = document.createElement('div');
-        card.setAttribute('class', 'card w-20');
+        card.setAttribute('class', 'card');
+        card.setAttribute('style', 'width: 200px;')
         card.innerHTML = `<div class="card-body">
                             <h5 class="card-header">${convertDate(data[i].dt)}</h5>
                             <img src=http://openweathermap.org/img/wn/${data[i].weather[0].icon}@2x.png />
                             <ul class="card-text">
-                                <li>Max Temperature: ${data[i].temp.max}</li>
-                                <li>Wind Speed: ${data[i].wind_speed}</li>
-                                <li>Humidity: ${data[i].humidity}</li>
+                                <li>Max Temperature: ${data[i].temp.max} F</li>
+                                <li>Wind Speed: ${data[i].wind_speed} MPH</li>
+                                <li>Humidity: ${data[i].humidity}%</li>
                             </ul>`
         cardContainer.appendChild(card);
     }
@@ -74,10 +76,21 @@ function displayFiveForecast(data){
 function displayCurrentData(data){
     currentContainer.textContent = '';
     var cityCurrentInfo = document.createElement('div');
-    cityCurrentInfo.innerHTML = `<h2>${city}</h2>`
+    var uvColor = getUVColor(data.uvi);
+    cityCurrentInfo.innerHTML = `<h2>${city.toUpperCase()}</h2>
+                                 <h3>Current Conditions</h3>
+                                    <img src=http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png />
+                                    <ul>
+                                        <li>Current Temperature: ${data.temp}</li>
+                                        <li>Wind Speed: ${data.wind_speed} MPH</li>
+                                        <li>Humidity: ${data.humidity}%</li>
+                                        <li>UV Index: <span id='${uvColor}'>${data.uvi}</span></li>
+                                    </ul>`
     currentContainer.append(cityCurrentInfo);
 
 }
+
+function getUVColor(uvIndex){}
 
 function convertDate(unixDate){
     return moment.unix(unixDate).format("MM/DD/YYYY");
