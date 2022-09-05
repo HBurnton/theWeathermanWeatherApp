@@ -1,0 +1,16 @@
+#low{
+    background-color: lightseagreen;
+}
+
+#medium{
+    background-color: goldenrod;
+}
+
+#high{
+    background-color: darkred;
+}
+
+.uvIcon{
+    padding: 5px;
+    border-radius: 5px;
+}

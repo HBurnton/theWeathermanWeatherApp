@@ -5,19 +5,28 @@ var cityInput = document.querySelector('#cityName');
 var cardContainer = document.querySelector('#cardContainer');
 var currentContainer = document.querySelector('#currentWeatherContainer')
 var h2Header = document.querySelector('#fiveDay')
+var priorSearchList = document.querySelector('#priorSearchList')
+var priorSearches = [];
 
 
 function buttonHandler(event){
     event.preventDefault();
-    city = cityInput.value.trim();
+    city = cityInput.value.trim().toUpperCase();
 
     if(city == ''){
         alert('Text field is Blank');
         return
     }
     getLatLong(city);
-    clearAll()
+    clearAll();
     
+}
+
+function linkHandler(event){
+    event.preventDefault;
+    city = event.target.textContent;
+    getLatLong(city);
+    clearAll();
 }
 
 function clearAll(){
@@ -30,6 +39,12 @@ function clearAll(){
 function getLatLong(city){
     
     var APIGeoCall = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${APIKey}`
+    if(!priorSearches.includes(city)){
+        priorSearches.push(city);
+        window.localStorage.setItem('storedSearches', JSON.stringify(priorSearches));
+        printPriorSearches();
+    }
+
 
     fetch(APIGeoCall)
         .then(function (response){
@@ -82,7 +97,7 @@ function displayCurrentData(data){
     var uvColor = getUVColor(data.uvi);
     cityCurrentInfo.setAttribute('class', 'w-100')
     cityCurrentInfo.innerHTML = `<div class='d-flex align-items-center'>
-                                <h2>${city.toUpperCase()}</h2>
+                                <h2>${city}</h2>
                                  <img src=http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png />
                                  </div>
                                  <h3 class='text-secondary'>Current Conditions</h3>
@@ -90,16 +105,46 @@ function displayCurrentData(data){
                                         <li>Current Temperature: ${data.temp}</li>
                                         <li>Wind Speed: ${data.wind_speed} MPH</li>
                                         <li>Humidity: ${data.humidity}%</li>
-                                        <li>UV Index: <span id='${uvColor}'>${data.uvi}</span></li>
+                                        <li>UV Index: <span class="uvIcon" id='${uvColor}'>${data.uvi}</span></li>
                                     </ul>`
     currentContainer.append(cityCurrentInfo);
 
 }
 
-function getUVColor(uvIndex){}
+function getUVColor(uvIndex){
+    if(uvIndex < 3){
+        return 'low';
+    }
+    if(uvIndex<7){
+        return 'medium';
+    }
+    else{
+        return 'high';
+    }
+}
 
 function convertDate(unixDate){
     return moment.unix(unixDate).format("MM/DD/YYYY");
 }
 
+function loadPriorSearches(){
+    var storedSearches = window.localStorage.getItem("storedSearches")
+    if(storedSearches){
+        priorSearches = JSON.parse(storedSearches);
+        printPriorSearches();
+    }
+}
+
+function printPriorSearches(){
+    priorSearchList.innerHTML = '';
+    for(var i = 0; i < priorSearches.length; i++){
+            var searchLocationLink = document.createElement('li');
+            searchLocationLink.textContent = priorSearches[i];
+            priorSearchList.appendChild(searchLocationLink);
+    }
+}
+
+
 button.addEventListener('click', buttonHandler)
+loadPriorSearches();
+priorSearchList.addEventListener('click', linkHandler)
